@@ -13,3 +13,8 @@ class EntityStatus(enum.IntEnum):
     on = 1
     off = 2
     unavailable = 3
+
+class Room(enum.Enum):
+    kitchen = "kitchen"
+    living_room = "living_room"
+    bedroom = "bedroom"
