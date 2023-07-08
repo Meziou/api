@@ -1,4 +1,6 @@
 from glados.models import Entity
+from glados import db
+from flask import request
 
 
 def get_entities(filters):
@@ -18,3 +20,23 @@ def get_entities(filters):
 
     return query.all()
 
+def create_entity(data):
+    entity = Entity(**data) 
+    db.session.add(entity)  
+    db.session.commit()  
+
+def get_entity(entity_id):
+    return Entity.query.get(entity_id)  
+
+def update_entity(entity_id, data):
+    entity = Entity.query.get(entity_id)  
+    if entity:
+        for key, value in data.items():
+            setattr(entity, key, value)  
+        db.session.commit()  
+
+def delete_entity(entity_id):
+    entity = Entity.query.get(entity_id)  
+    if entity:
+        db.session.delete(entity)  
+        db.session.commit()  
