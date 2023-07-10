@@ -1,12 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from glados.repositories.entities import (
-    get_entities,
-    get_entity,
-    create_entity,
-    update_entity,
-    delete_entity
-)
+from glados.repositories.entities import *
 
 from glados.api.entity.serializers import EntitiesRequestSerializer, EntityResponseSerializer
 from glados.repositories.entities import get_entities
