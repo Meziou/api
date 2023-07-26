@@ -1,7 +1,7 @@
-from glados.models import Entity
+from glados.models import Entity, Room
 from glados import db
 from flask import request
-
+from sqlalchemy.exc import SQLAlchemyError
 
 def get_entities(filters):
     query = Entity.query
@@ -21,9 +21,20 @@ def get_entities(filters):
     return query.all()
 
 def create_entity(data):
-    entity = Entity(**data) 
-    db.session.add(entity)  
-    db.session.commit()  
+    try:
+        room_name = data.pop("room")
+        room = Room.query.filter_by(name=room_name).first()
+        if room:
+            entity = Entity(**data)
+            entity.room = room
+            db.session.add(entity)
+            db.session.commit()
+            print("Entity created:", entity)
+        else:
+            print("Room not found for name:", room_name)
+    except SQLAlchemyError as e:
+        db.session.rollback()  # Annule toute transaction en cas d'erreur
+        print("Error creating entity:", str(e))
 
 def get_entity(entity_id):
     return Entity.query.get(entity_id)  
@@ -38,5 +49,5 @@ def update_entity(entity_id, data):
 def delete_entity(entity_id):
     entity = Entity.query.get(entity_id)  
     if entity:
-        db.session.delete(entity)  
+        db.session.delete(entity)
         db.session.commit()  

@@ -1,6 +1,7 @@
 from flask import request
 from flask_restful import Resource
 from glados.repositories.entities import *
+from glados.repositories.rooms import *
 
 from glados.api.entity.serializers import EntitiesRequestSerializer, EntityResponseSerializer
 from glados.repositories.entities import get_entities
@@ -30,7 +31,7 @@ class EntityAPI(Resource):
         else:
             return {"message": "Entity not found"}, 404
 
-    def put(self, entity_id):
+    def patch(self, entity_id):
         data = request.get_json()
         update_entity(entity_id, data)
         return {"message": "Entity updated"}, 200
@@ -38,3 +39,8 @@ class EntityAPI(Resource):
     def delete(self, entity_id):
         delete_entity(entity_id)
         return {"message": "Entity deleted"}, 200
+
+class RoomsAPI(Resource):
+    def get(self):
+        rooms = get_all_rooms()
+        return [room.to_json() for room in rooms], 200

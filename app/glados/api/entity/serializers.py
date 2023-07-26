@@ -1,4 +1,4 @@
-from marshmallow import fields, validate
+from marshmallow import fields, validate, Schema
 
 from glados import ma, constants
 from glados.models import Entity
@@ -25,6 +25,24 @@ class EntitySerializer(ma.Schema):
             "created_at"
         ]
 
+class RoomSerializer(Schema):
+    id = fields.UUID()
+    name = fields.String()
+    created_at = fields.DateTime(format="%Y-%m-%dT%H:%M:%S")
 
 class EntityResponseSerializer(EntitySerializer):
+    room = fields.String(attribute="room.name")
+
+    class Meta:
+        model = Entity
+        ordered = True
+        fields = [
+            "id",
+            "name",
+            "type",
+            "status",
+            "value",
+            "created_at",
+            "room"  # Add the room field to the serializer
+        ]
     pass

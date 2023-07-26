@@ -15,6 +15,7 @@ class EntityStatus(enum.IntEnum):
     unavailable = 3
 
 class Room(enum.Enum):
-    kitchen = "kitchen"
-    living_room = "living_room"
-    bedroom = "bedroom"
+    KITCHEN = "Kitchen"
+    LIVING_ROOM = "Living Room"
+    BEDROOM = "Bedroom"
+    BATHROOM = "Bathroom"
